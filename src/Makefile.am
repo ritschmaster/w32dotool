@@ -36,13 +36,14 @@ endif
 bin_PROGRAMS = w32dotool
 
 w32dotool_SOURCES = main.c
+w32dotool_SOURCES += cmd.h cmd.c
+w32dotool_SOURCES += search.h search.c
+w32dotool_SOURCES += windowactivate.h windowactivate.c
 
 w32dotool_CFLAGS = $(AM_CFLAGS)
-w32dotool_CFLAGS += @libw32bindkeys_CFLAGS@
 
 w32dotool_LDFLAGS = $(AM_LDFLAGS)
 w32dotool_LDFLAGS += -static
 w32dotool_LDFLAGS += -mwindows
 
-w32dotool_LDADD = @libw32bindkeys_LIBS@
-w32dotool_LDADD += @libpcre_LIBS@
+w32dotool_LDADD = @libpcre_LIBS@

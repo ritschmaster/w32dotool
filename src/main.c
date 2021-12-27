@@ -23,8 +23,75 @@
 *******************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 
-int main(int argc, char *argv[])
+#include "cmd.h"
+#include "search.h"
+#include "windowactivate.h"
+
+static int
+print_help(void);
+
+int
+WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    int error;
+    LPWSTR *wargv;
+    char **argv;
+    int argc;
+    int i;
+    size_t size;
+    int executed_any;
+    wdt_cmd_t *search;
+    wdt_cmd_t* windowactivate;
+
+    executed_any = 0;
+
+    wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
+    if (wargv) {
+        argv = malloc(sizeof(char *) * argc);
+        for (i = 0; i < argc; i++) {
+            size = sizeof(char) * (sizeof(wchar_t) * wcslen(wargv[i]) + 1);
+            argv[i] = malloc(size);
+            memset(argv[i], 0, size);
+            wcstombs(argv[i], wargv[i], size);
+        }
+
+        search = (wdt_cmd_t *) wdt_search_new(argc, argv);
+        if (search) {
+            executed_any = 1;
+            error = wdt_cmd_exec(search);
+        }
+
+        windowactivate = (wdt_cmd_t *) wdt_windowactivate_new(argc, argv);
+        if (windowactivate) {
+            executed_any = 1;
+            error = wdt_cmd_exec(windowactivate);
+        }
+
+        if (!executed_any) {
+            error = 127;
+            print_help();
+        }
+
+        if (search) {
+            wdt_cmd_free(search);
+        }
+
+        if (windowactivate) {
+            wdt_cmd_free(windowactivate);
+        }
+
+        free(argv);
+        LocalFree(wargv);
+    }
+
+    return error;
+}
+
+int
+print_help(void)
+{
+    fprintf(stderr, "Wrong command!");
     return 0;
 }

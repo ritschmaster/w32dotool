@@ -44,7 +44,6 @@ LT_INIT([static])
 
 # Checks for libraries.
 AC_CHECK_LIB([m], [cos])
-PKG_CHECK_MODULES([collectionc], [collectionc >= 3.14.3])
 PKG_CHECK_MODULES([libpcre], [libpcre >= 8.44])
 
 # Checks for header files.

@@ -27,5 +27,5 @@ m4
 **/*_la*
 **/*.o
 
-src/w32dotool
+src/w32dotool.exe
 

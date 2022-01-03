@@ -37,6 +37,7 @@ bin_PROGRAMS = w32dotool
 
 w32dotool_SOURCES = main.c
 w32dotool_SOURCES += cmd.h cmd.c
+w32dotool_SOURCES += getmouselocation.h getmouselocation.c
 w32dotool_SOURCES += search.h search.c
 w32dotool_SOURCES += windowactivate.h windowactivate.c
 

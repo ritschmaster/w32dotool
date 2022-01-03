@@ -36,7 +36,7 @@ static struct option WDT_SEARCH_GETOPT_LONG_OPTIONS[] = {
 /*   NAME          ARGUMENT           FLAG  SHORTNAME */
     {"any",        no_argument,       NULL, '1'},
     {"all",        no_argument,       NULL, '2'},
-    {"sync",        no_argument,       NULL, 's'},
+    {"sync",       no_argument,       NULL, 's'},
     {"class",      no_argument,       NULL, 'c'},
     {"name",       no_argument,       NULL, 'n'},
     {NULL,         0,                 NULL, 0}
@@ -109,7 +109,7 @@ wdt_search_new(int argc, char *argv[])
         search->any = 1;
     }
 
-    found_at = 1;
+    found_at = 0;
     found_end = found_at;
     for (i = found_at; i < argc; i++) {
         if (strcmp(argv[i], "search") == 0) {
@@ -160,6 +160,15 @@ wdt_search_new(int argc, char *argv[])
                     // TODO?
                     error = 1;
             }
+        }
+
+        /**
+         * Set default option if neither --class nor --name was supplied
+         */
+        if (search->class == 0
+            && search->name == 0) {
+            search->class = 1;
+            search->name = 1;
         }
     } else {
         error = 1;

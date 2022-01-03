@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "cmd.h"
+#include "getmouselocation.h"
 #include "search.h"
 #include "windowactivate.h"
 
@@ -42,8 +43,9 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
     int i;
     size_t size;
     int executed_any;
+    wdt_cmd_t *getmouselocation;
     wdt_cmd_t *search;
-    wdt_cmd_t* windowactivate;
+    wdt_cmd_t *windowactivate;
 
     executed_any = 0;
 
@@ -55,6 +57,12 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
             argv[i] = malloc(size);
             memset(argv[i], 0, size);
             wcstombs(argv[i], wargv[i], size);
+        }
+
+        getmouselocation = (wdt_cmd_t *) wdt_getmouselocation_new(argc, argv);
+        if (getmouselocation) {
+            executed_any = 1;
+            error = wdt_cmd_exec(getmouselocation);
         }
 
         search = (wdt_cmd_t *) wdt_search_new(argc, argv);
@@ -72,6 +80,10 @@ WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, in
         if (!executed_any) {
             error = 127;
             print_help();
+        }
+
+        if (getmouselocation) {
+            wdt_cmd_free(getmouselocation);
         }
 
         if (search) {

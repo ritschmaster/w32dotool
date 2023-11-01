@@ -6,6 +6,10 @@
 
 xdotool for Windows
 
+## Current state
+
+I have moved on to use macOS exclusively. As a result I completely dropped using xdotool/w32dotool and also stopped developing w32dotool. Therefore I am open to transfer the ownership to anyone who is willing to actively maintain this piece of software. Just write me an e-mail.
+
 ## Description 
 
 w32dotool is a clone of [xdotool](https://www.semicomplete.com/projects/xdotool/) but targeting Windows. Its ultimate goal is to fully replicate ALL commands supplied by xdotool.
